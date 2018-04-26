@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PongGame.BL
 {
-    public class Button : Component
+    public class TextButton : Component
     {
         #region fields
         private MouseState currentMouse;
@@ -28,7 +28,7 @@ namespace PongGame.BL
         #endregion
 
         #region Methods
-        public Button(Texture2D texture, SpriteFont spriteFont)
+        public TextButton(Texture2D texture, SpriteFont spriteFont)
         {
             this.texture = texture;
             this.font = spriteFont;

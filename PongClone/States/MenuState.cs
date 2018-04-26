@@ -25,30 +25,39 @@ namespace PongGame.States
 
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content) : base(game, graphicsDevice, content)
         {
-            BL.Button newGameButton;
-            using (var stream = TitleContainer.OpenStream("Content/Button.png"))
+            //BL.Button newGameButton;
+            //using (var stream = TitleContainer.OpenStream("Content/Button.png"))
+            //{
+            //    var buttonFont = content.Load<SpriteFont>("Font");
+            //    var buttonTexture = Texture2D.FromStream(this.graphicsDevice, stream);
+            //    newGameButton = new BL.Button(buttonTexture, buttonFont)
+            //    {
+            //        Position = new Vector2(600, 200),
+            //        Text = "New Game"
+            //    };
+            //    newGameButton.Click += NewgameButton_Click;
+            //}
+            ImageButton newgameButton;
+            using (var stream = TitleContainer.OpenStream("Content/ButtonStartGame.png"))
             {
-                var buttonFont = content.Load<SpriteFont>("Font");
                 var buttonTexture = Texture2D.FromStream(this.graphicsDevice, stream);
-                newGameButton = new BL.Button(buttonTexture, buttonFont)
-                {
-                    Position = new Vector2(600, 200),
-                    Text = "New Game"
-                };
-                newGameButton.Click += NewgameButton_Click;
+                var xPosition = GameBoundaries.Width - 30 - buttonTexture.Width;
+                var yPosition = GameBoundaries.Height / 2- buttonTexture.Height;
+                newgameButton = new ImageButton(buttonTexture, this.graphicsDevice);
+                newgameButton.SetPosition(new Vector2(xPosition, yPosition));
+                newgameButton.Click += NewgameButton_Click;
             }
 
-            BL.Button quitGameButton;
-            using (var stream = TitleContainer.OpenStream("Content/Button.png"))
+            ImageButton quitGameButton;
+            using (var stream = TitleContainer.OpenStream("Content/ButtonQuitGame.png"))
             {
-                var buttonFont = content.Load<SpriteFont>("Font");
                 var buttonTexture = Texture2D.FromStream(this.graphicsDevice, stream);
-                quitGameButton = new BL.Button(buttonTexture, buttonFont)
-                {
-                    Position = new Vector2(600, 250),
-                    Text = "Quit Game"
-                };
+                quitGameButton = new ImageButton(buttonTexture, this.graphicsDevice);
                 quitGameButton.Click += QuitgameButton_Click;
+
+                var xPosition = GameBoundaries.Width - 30 - buttonTexture.Width;
+                var yPosition = GameBoundaries.Height / 2 ;
+                quitGameButton.SetPosition(new Vector2(xPosition,yPosition));
             }
 
             using (var stream = TitleContainer.OpenStream("Content/MenugameBackground.jpg"))
@@ -57,10 +66,11 @@ namespace PongGame.States
                 background = new Background(backgroundTexture, GameBoundaries);
             }
 
+           
             // load component
             components = new List<Component>()
             {
-                newGameButton,quitGameButton
+                 newgameButton,quitGameButton
             };
         }
 

@@ -19,8 +19,8 @@ namespace PongGame.States
         private Score score;
         private Background background;
         private GameObjects gameObjects;
-        private BL.Button quitGameButton;
-        private BL.Button backmenuButton;
+        private ImageButton quitGameButton;
+        private ImageButton backmenuButton;
         #endregion
 
         GraphicsDeviceManager graphics;
@@ -54,30 +54,26 @@ namespace PongGame.States
                 background = new BL.Background(Texture2D.FromStream(this.graphicsDevice, stream),
                    gameBoundaries);
             }
-            using (var stream = TitleContainer.OpenStream("Content/Button.png"))
+            using (var stream = TitleContainer.OpenStream("Content/ButtonBackGame.png"))
             {
-                var buttonFont = content.Load<SpriteFont>("Font");
                 var buttonTexture = Texture2D.FromStream(this.graphicsDevice, stream);
                 var xPosition = 10;
                 var yPositon = gameBoundaries.Height - 10 - buttonTexture.Height;
-                backmenuButton = new BL.Button(buttonTexture, buttonFont)
+                backmenuButton = new BL.ImageButton(buttonTexture, this.graphicsDevice)
                 {
                     Position = new Vector2(xPosition, yPositon),
-                    Text = "Back Menu "
                 };
                 backmenuButton.Click += backmenuButton_Click;
             }
 
-            using (var stream = TitleContainer.OpenStream("Content/Button.png"))
+            using (var stream = TitleContainer.OpenStream("Content/ButtonQuitGame.png"))
             {
-                var buttonFont = content.Load<SpriteFont>("Font");
                 var buttonTexture = Texture2D.FromStream(this.graphicsDevice, stream);
                 var xPosition = gameBoundaries.Width-10-buttonTexture.Width  ;
                 var yPositon = gameBoundaries.Height-10-buttonTexture.Height;
-                quitGameButton = new BL.Button(buttonTexture, buttonFont)
+                quitGameButton = new BL.ImageButton(buttonTexture, this.graphicsDevice)
                 {
                     Position = new Vector2(xPosition, yPositon),
-                    Text = "Quit Game"
                 };
                 quitGameButton.Click += QuitgameButton_Click;
             }

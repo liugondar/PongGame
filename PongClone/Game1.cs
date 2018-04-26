@@ -90,7 +90,7 @@ namespace PongGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.White);
+            GraphicsDevice.Clear(Color.AntiqueWhite);
 
             currentState.Draw(gameTime, spriteBatch);
             base.Draw(gameTime);
