@@ -9,7 +9,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PongGame.BL
 {
-    public class Background
+    public class Background:Component
     {
         Texture2D texture;
         Rectangle gameBoundaries;
@@ -23,9 +23,14 @@ namespace PongGame.BL
             this.gameBoundaries = gameBoundaries;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, gameBoundaries, Color.Azure);
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            throw new NotImplementedException();
         }
     }
 }

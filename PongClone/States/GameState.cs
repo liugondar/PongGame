@@ -63,7 +63,7 @@ namespace PongGame.States
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
-            background.Draw(spriteBatch);
+            background.Draw(gameTime, spriteBatch);
             computerPaddle.Draw(spriteBatch);
             playerPaddle.Draw(spriteBatch);
             ball.Draw(spriteBatch);

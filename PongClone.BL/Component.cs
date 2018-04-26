@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PongGame.Controls
+namespace PongGame.BL
 {
     public abstract class Component
     {

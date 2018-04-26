@@ -44,7 +44,9 @@
   <ItemGroup>
     <Compile Include="Background.cs" />
     <Compile Include="Ball.cs" />
+    <Compile Include="Button.cs" />
     <Compile Include="Calc2D.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="GameObjects.cs" />
     <Compile Include="Paddle.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using PongGame.BL;
-using PongGame.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +12,8 @@ namespace PongGame.States
 {
     public class MenuState : State
     {
-        private List<Component> components;
-        private Controls.Background background;
+        private List<BL.Component> components;
+        private Background background;
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content) : base(game, graphicsDevice, content)
         {
             Button newGameButton;
@@ -60,7 +59,7 @@ namespace PongGame.States
             {
                 var backgroundTexture = Texture2D.FromStream(this.graphicsDevice, stream);
                 var rectangle = new Rectangle(game.Window.Position.X, game.Window.Position.Y, game.Window.ClientBounds.Width, game.Window.ClientBounds.Height);
-                background = new Controls.Background(backgroundTexture, rectangle);
+                background = new Background(backgroundTexture, rectangle);
             }
 
             // load component
