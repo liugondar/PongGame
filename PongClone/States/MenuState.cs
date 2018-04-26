@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using PongGame.BL;
 using System;
 using System.Collections.Generic;
@@ -8,48 +9,43 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace PongGame.States
 {
     public class MenuState : State
     {
         private List<BL.Component> components;
         private Background background;
+        public Rectangle GameBoundaries=> new Rectangle(0, 0, game.Window.ClientBounds.Width, game.Window.ClientBounds.Height);
+        private MouseState currentMouse;
+        private MouseState previouseMouse;
+
+        public event EventHandler Click;
+
+
         public MenuState(Game1 game, GraphicsDevice graphicsDevice, ContentManager content) : base(game, graphicsDevice, content)
         {
-            Button newGameButton;
+            BL.Button newGameButton;
             using (var stream = TitleContainer.OpenStream("Content/Button.png"))
             {
                 var buttonFont = content.Load<SpriteFont>("Font");
                 var buttonTexture = Texture2D.FromStream(this.graphicsDevice, stream);
-                newGameButton = new Button(buttonTexture, buttonFont)
+                newGameButton = new BL.Button(buttonTexture, buttonFont)
                 {
-                    Position = new Vector2(300, 200),
+                    Position = new Vector2(600, 200),
                     Text = "New Game"
                 };
                 newGameButton.Click += NewgameButton_Click;
             }
 
-            Button loadGameButton;
+            BL.Button quitGameButton;
             using (var stream = TitleContainer.OpenStream("Content/Button.png"))
             {
                 var buttonFont = content.Load<SpriteFont>("Font");
                 var buttonTexture = Texture2D.FromStream(this.graphicsDevice, stream);
-                loadGameButton = new Button(buttonTexture, buttonFont)
+                quitGameButton = new BL.Button(buttonTexture, buttonFont)
                 {
-                    Position = new Vector2(300, 250),
-                    Text = "Load Game"
-                };
-                loadGameButton.Click += LoadgameButton_Click;
-            }
-
-            Button quitGameButton;
-            using (var stream = TitleContainer.OpenStream("Content/Button.png"))
-            {
-                var buttonFont = content.Load<SpriteFont>("Font");
-                var buttonTexture = Texture2D.FromStream(this.graphicsDevice, stream);
-                quitGameButton = new Button(buttonTexture, buttonFont)
-                {
-                    Position = new Vector2(300, 300),
+                    Position = new Vector2(600, 250),
                     Text = "Quit Game"
                 };
                 quitGameButton.Click += QuitgameButton_Click;
@@ -58,14 +54,13 @@ namespace PongGame.States
             using (var stream = TitleContainer.OpenStream("Content/StartgameBackground.jpg"))
             {
                 var backgroundTexture = Texture2D.FromStream(this.graphicsDevice, stream);
-                var rectangle = new Rectangle(game.Window.Position.X, game.Window.Position.Y, game.Window.ClientBounds.Width, game.Window.ClientBounds.Height);
-                background = new Background(backgroundTexture, rectangle);
+                background = new Background(backgroundTexture, GameBoundaries);
             }
 
             // load component
             components = new List<Component>()
             {
-                newGameButton,loadGameButton,quitGameButton
+                newGameButton,quitGameButton
             };
         }
 
@@ -77,11 +72,6 @@ namespace PongGame.States
         private void NewgameButton_Click(object sender, EventArgs e)
         {
             game.ChangeState(new GameState(game, graphicsDevice, content));
-        }
-
-        private void LoadgameButton_Click(object sender, EventArgs e)
-        {
-            Console.WriteLine("Load Game");
         }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
@@ -102,7 +92,8 @@ namespace PongGame.States
         {
             foreach (var component in components)
                 component.Update(gameTime);
+            background.Update(gameTime);
         }
-
+     
     }
 }

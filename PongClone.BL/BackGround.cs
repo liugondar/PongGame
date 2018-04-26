@@ -30,7 +30,6 @@ namespace PongGame.BL
 
         public override void Update(GameTime gameTime)
         {
-            throw new NotImplementedException();
         }
     }
 }

@@ -19,6 +19,8 @@ namespace PongGame.States
         private Score score;
         private Background background;
         private GameObjects gameObjects;
+        private BL.Button quitGameButton;
+        private BL.Button backmenuButton;
         #endregion
 
         GraphicsDeviceManager graphics;
@@ -52,18 +54,55 @@ namespace PongGame.States
                 background = new BL.Background(Texture2D.FromStream(this.graphicsDevice, stream),
                    gameBoundaries);
             }
+            using (var stream = TitleContainer.OpenStream("Content/Button.png"))
+            {
+                var buttonFont = content.Load<SpriteFont>("Font");
+                var buttonTexture = Texture2D.FromStream(this.graphicsDevice, stream);
+                var xPosition = 10;
+                var yPositon = gameBoundaries.Height - 10 - buttonTexture.Height;
+                backmenuButton = new BL.Button(buttonTexture, buttonFont)
+                {
+                    Position = new Vector2(xPosition, yPositon),
+                    Text = "Back Menu "
+                };
+                backmenuButton.Click += backmenuButton_Click;
+            }
 
+            using (var stream = TitleContainer.OpenStream("Content/Button.png"))
+            {
+                var buttonFont = content.Load<SpriteFont>("Font");
+                var buttonTexture = Texture2D.FromStream(this.graphicsDevice, stream);
+                var xPosition = gameBoundaries.Width-10-buttonTexture.Width  ;
+                var yPositon = gameBoundaries.Height-10-buttonTexture.Height;
+                quitGameButton = new BL.Button(buttonTexture, buttonFont)
+                {
+                    Position = new Vector2(xPosition, yPositon),
+                    Text = "Quit Game"
+                };
+                quitGameButton.Click += QuitgameButton_Click;
+            }
             ball.AttachTo(playerPaddle);
             //Score
             score = new Score(content.Load<SpriteFont>("GameFont"), gameBoundaries);
             gameObjects = new GameObjects { Ball = ball, PlayerPaddle = playerPaddle, ComputerPaddle = computerPaddle };
 
         }
+        private void QuitgameButton_Click(object sender, EventArgs e)
+        {
+            game.Exit();
+        }
+
+        private void backmenuButton_Click(object sender, EventArgs e)
+        {
+            game.ChangeState(new MenuState(game, graphicsDevice, content));
+        }
 
         public override void Draw(GameTime gameTime, SpriteBatch spriteBatch)
         {
             spriteBatch.Begin();
             background.Draw(gameTime, spriteBatch);
+            backmenuButton.Draw(gameTime, spriteBatch);
+            quitGameButton.Draw(gameTime, spriteBatch);
             computerPaddle.Draw(spriteBatch);
             playerPaddle.Draw(spriteBatch);
             ball.Draw(spriteBatch);
@@ -81,6 +120,8 @@ namespace PongGame.States
             ball.Update(gameTime, gameObjects);
             computerPaddle.Update(gameTime, gameObjects);
             score.Update(gameTime, gameObjects);
+            backmenuButton.Update(gameTime);
+            quitGameButton.Update(gameTime);
         }
     }
 }

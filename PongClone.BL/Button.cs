@@ -40,8 +40,6 @@ namespace PongGame.BL
             if (isHovering)
             {
                 _color = Color.Gray;
-
-                Console.WriteLine(_color.ToString());
             }
 
             spriteBatch.Draw(texture, Rectangle, _color);

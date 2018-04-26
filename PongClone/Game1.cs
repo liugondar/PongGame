@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PongGame.BL;
 using PongGame.States;
+using System.Windows.Forms;
 
 namespace PongGame
 {
@@ -13,6 +14,7 @@ namespace PongGame
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Form MyGameForm;
 
         private State currentState;
         private State nextState;
@@ -38,7 +40,11 @@ namespace PongGame
 
             base.Initialize();
             this.IsMouseVisible = true;
-            this.Window.Position = new Point(200, 50); // xPos and yPos (pixel)
+
+            MyGameForm = (Form)Form.FromHandle(Window.Handle);
+            MyGameForm.FormBorderStyle = FormBorderStyle.SizableToolWindow;
+            Window.Position = new Point(250, 100); // xPos and yPos (pixel)
+
         }
 
         /// <summary>
