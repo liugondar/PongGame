@@ -51,7 +51,7 @@ namespace PongGame.States
                 quitGameButton.Click += QuitgameButton_Click;
             }
 
-            using (var stream = TitleContainer.OpenStream("Content/StartgameBackground.jpg"))
+            using (var stream = TitleContainer.OpenStream("Content/MenugameBackground.jpg"))
             {
                 var backgroundTexture = Texture2D.FromStream(this.graphicsDevice, stream);
                 background = new Background(backgroundTexture, GameBoundaries);
