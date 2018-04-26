@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using PongGame.BL;
+using PongGame.States;
 
 namespace PongGame 
 {
@@ -19,6 +20,14 @@ namespace PongGame
         private Score score;
         private Background background;
         private GameObjects gameObjects;
+
+        private State currentState;
+        private State nextState;
+
+        public void ChangeState(State state)
+        {
+            nextState = state;
+        }
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -48,38 +57,41 @@ namespace PongGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            var gameBoundaries = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
-            //Player 1 paddle
-            using (var stream = TitleContainer.OpenStream("Content/Player1Paddle.png"))
-            {
-                var paddle1Texture = Texture2D.FromStream(this.GraphicsDevice, stream);
-                var playerPaddleLocation = new Vector2(0, gameBoundaries.Height / 2-paddle1Texture.Height);
-                playerPaddle = new Paddle(paddle1Texture,playerPaddleLocation, gameBoundaries, Paddle.PlayerTypes.Human);
-            }
-            //Player 2 paddle
-            using (var stream = TitleContainer.OpenStream("Content/Player2Paddle.png"))
-            {
-                var paddle2Texture = Texture2D.FromStream(this.GraphicsDevice, stream);
-                var computerPaddleLocation = new Vector2(gameBoundaries.Width - paddle2Texture.Width, gameBoundaries.Height/2-paddle2Texture.Height);
-                computerPaddle = new Paddle(paddle2Texture, computerPaddleLocation, gameBoundaries, Paddle.PlayerTypes.Computer);
-            }
-            //Ball
-            using (var stream = TitleContainer.OpenStream("Content/Ball.png"))
-            {
-                ball = new BL.Ball(Texture2D.FromStream(this.GraphicsDevice, stream), Vector2.Zero,
-                   gameBoundaries);
-            }
+            //    var gameBoundaries = new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height);
+            //    //Player 1 paddle
+            //    using (var stream = TitleContainer.OpenStream("Content/Player1Paddle.png"))
+            //    {
+            //        var paddle1Texture = Texture2D.FromStream(this.GraphicsDevice, stream);
+            //        var playerPaddleLocation = new Vector2(0, gameBoundaries.Height / 2-paddle1Texture.Height);
+            //        playerPaddle = new Paddle(paddle1Texture,playerPaddleLocation, gameBoundaries, Paddle.PlayerTypes.Human);
+            //    }
+            //    //Player 2 paddle
+            //    using (var stream = TitleContainer.OpenStream("Content/Player2Paddle.png"))
+            //    {
+            //        var paddle2Texture = Texture2D.FromStream(this.GraphicsDevice, stream);
+            //        var computerPaddleLocation = new Vector2(gameBoundaries.Width - paddle2Texture.Width, gameBoundaries.Height/2-paddle2Texture.Height);
+            //        computerPaddle = new Paddle(paddle2Texture, computerPaddleLocation, gameBoundaries, Paddle.PlayerTypes.Computer);
+            //    }
+            //    //Ball
+            //    using (var stream = TitleContainer.OpenStream("Content/Ball.png"))
+            //    {
+            //        ball = new BL.Ball(Texture2D.FromStream(this.GraphicsDevice, stream), Vector2.Zero,
+            //           gameBoundaries);
+            //    }
 
-            using (var stream = TitleContainer.OpenStream("Content/Background.jpg"))
-            {
-                background = new BL.Background(Texture2D.FromStream(this.GraphicsDevice, stream),
-                   gameBoundaries);
-            }
+            //    using (var stream = TitleContainer.OpenStream("Content/Background.jpg"))
+            //    {
+            //        background = new BL.Background(Texture2D.FromStream(this.GraphicsDevice, stream),
+            //           gameBoundaries);
+            //    }
 
-            ball.AttachTo(playerPaddle);
-            //Score
-            score = new Score(Content.Load<SpriteFont>("GameFont"),gameBoundaries);
-            gameObjects = new GameObjects { Ball = ball, PlayerPaddle = playerPaddle, ComputerPaddle = computerPaddle };
+            //    ball.AttachTo(playerPaddle);
+            //    //Score
+            //    score = new Score(Content.Load<SpriteFont>("GameFont"),gameBoundaries);
+            //    gameObjects = new GameObjects { Ball = ball, PlayerPaddle = playerPaddle, ComputerPaddle = computerPaddle };
+            //
+
+            currentState = new MenuState(this, graphics.GraphicsDevice, Content);
         }
 
         /// <summary>
@@ -98,14 +110,20 @@ namespace PongGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
 
 
-            playerPaddle.Update(gameTime, gameObjects);
-            ball.Update(gameTime, gameObjects);
-            computerPaddle.Update(gameTime, gameObjects);
-            score.Update(gameTime, gameObjects);
+            //playerPaddle.Update(gameTime, gameObjects);
+            //ball.Update(gameTime, gameObjects);
+            //computerPaddle.Update(gameTime, gameObjects);
+            //score.Update(gameTime, gameObjects);
+
+            if (nextState != null)
+            {
+                currentState = nextState;
+                nextState = null;
+            }
+            currentState.Update(gameTime);
+            currentState.PostUpdate(gameTime);
             base.Update(gameTime);
         }
 
@@ -117,14 +135,15 @@ namespace PongGame
         {
             GraphicsDevice.Clear(Color.White);
 
-            spriteBatch.Begin();
-            background.Draw(spriteBatch);
-            computerPaddle.Draw(spriteBatch);
-            playerPaddle.Draw(spriteBatch);
-            ball.Draw(spriteBatch);
-            score.Draw(spriteBatch);
-            spriteBatch.End();
+            //spriteBatch.Begin();
+            //background.Draw(spriteBatch);
+            //computerPaddle.Draw(spriteBatch);
+            //playerPaddle.Draw(spriteBatch);
+            //ball.Draw(spriteBatch);
+            //score.Draw(spriteBatch);
+            //spriteBatch.End();
 
+            currentState.Draw(gameTime, spriteBatch);
             base.Draw(gameTime);
         }
     }
